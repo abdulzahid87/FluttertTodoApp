@@ -1,2 +1,2 @@
 # todoapp
-This is the source for code Todo App 
+This is the source of code Todo App 
