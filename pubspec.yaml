@@ -1,0 +1,43 @@
+name: android_todo_app
+description: Todo App
+
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  firebase_core: ^1.6.0
+  cloud_firestore: ^2.5.1
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "asset/images/icon.png"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  fonts:
+    - family: STIX Two Text
+      fonts:
+        - asset: asset/fonts/STIXTwoText-VariableFont_wght.ttf
+    - family: Style Script
+      fonts:
+        - asset: asset/fonts/StyleScript-Regular.ttf
+    - family: RobotoSlab
+      fonts:
+        - asset: asset/fonts/RobotoSlab-VariableFont_wght.ttf
