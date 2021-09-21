@@ -12,8 +12,10 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  final Stream<QuerySnapshot> todoStream =
-      FirebaseFirestore.instance.collection('tasks').snapshots();
+  final Stream<QuerySnapshot> todoStream = FirebaseFirestore.instance
+      .collection('tasks')
+      .orderBy('deadline', descending: true)
+      .snapshots();
 
   CollectionReference todo = FirebaseFirestore.instance.collection('tasks');
   Future<void> deleteUser(id) {
@@ -64,90 +66,93 @@ class _TodoListState extends State<TodoList> {
                     child: SingleChildScrollView(
                       child: Column(children: [
                         for (var i = 0; i < storedocs.length; i++) ...[
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, top: 8),
-                                    child: Container(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        storedocs[i]['title'],
-                                        style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.yellowAccent,
-                                            fontFamily: "STIX Two Text"),
+                          Card(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, top: 8),
+                                      child: Container(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          storedocs[i]['title'],
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.yellowAccent,
+                                              fontFamily: "STIX Two Text"),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 8.0,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                                storedocs[i]['description'],
+                                                style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    fontFamily: "STIX Two Text",
+                                                    color: Color(0xffebebeb))),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                                storedocs[i]['deadline']
+                                                    .toDate()
+                                                    .toString()
+                                                    .substring(0, 16),
+                                                style: TextStyle(
+                                                  fontSize: 12.0,
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         Container(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                              storedocs[i]['description'],
-                                              style: TextStyle(
-                                                  fontSize: 15.0,
-                                                  fontFamily: "STIX Two Text",
-                                                  color: Color(0xffebebeb))),
+                                          child: IconButton(
+                                            iconSize: 28,
+                                            color: Colors.lightBlueAccent,
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => UpdateTodo(
+                                                    id: storedocs[i]['id']),
+                                              ),
+                                            ),
+                                            icon: Icon(Icons.edit),
+                                          ),
                                         ),
                                         Container(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                              storedocs[i]['deadline']
-                                                  .toDate()
-                                                  .toString()
-                                                  .substring(0, 10),
-                                              style: TextStyle(
-                                                fontSize: 12.0,
-                                              )),
+                                          child: IconButton(
+                                            iconSize: 28,
+                                            onPressed: () =>
+                                                deleteUser(storedocs[i]['id']),
+                                            color: Colors.redAccent,
+                                            icon: Icon(Icons.delete),
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children:[
-                                  Container(
-                                    child: IconButton(
-                                      iconSize: 28,
-                                      color: Colors.lightBlueAccent,
-                                      onPressed: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdateTodo(id: storedocs[i]['id']),
-                                        ),
-                                      ),
-                                      icon: Icon(Icons.edit),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: IconButton(
-                                      iconSize: 28,
-                                      onPressed: () =>
-                                          deleteUser(storedocs[i]['id']),
-                                      color: Colors.redAccent,
-                                      icon: Icon(Icons.delete),
-                                    ),
-                                  ),
-                                ]),
-                              ),
-                            ],
+                                      ]),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ]),
